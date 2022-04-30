@@ -1,0 +1,143 @@
+loadkeys es
+ping 8.8.8.8 (Con cable)
+
+ls /sys/firmware/efi/efivars/ (si despliega lista es efi si no es bios)
+
+Crear particiones BIOS
+
+fdisk -l
+cfdisk /dev/sda
+
+sda1 512M primary Bootable* write
+sda2 /root 20G primary write
+sda3 /home xG primary write
+sda4 swap ramG primary type=Linux Swap / Solaris write
+
+Formatear particiones BIOS 
+
+mkfs.ext2 /dev/sda1 
+mkfs.ext4 /dev/sda2 
+mkfs.ext4 /dev/sda3
+mkswap /dev/sda4
+swapon
+
+Montar particiones BIOS
+
+mount /dev/sda2/ /mnt 
+mkdir /mnt/boot 
+mount /dev/sda1/ /mnt/boot/
+mkdir /mnt/home
+mount /dev/sda3/ /mnt/home
+
+Paquetes Base
+
+pacstrap /mnt linux linux-firmware base nano (os-prober si tienes windows) grub networkmanager dhcpcd (efibootmgr si es efi) netctl wpa_supplicant dialog
+
+Generar fstab
+
+genfstab /mnt >> /mnt/etc/fstab 
+cat /mnt/etc/fstab
+
+Time Zone KEYMAP
+
+arch-chroot /mnt 
+echo PC-ArchLinux > /etc/hostname
+timedatectl list-timezones
+America/Lima
+ln -sf /usr/share/zoneinfo/America/Lima /etc/localtime
+nano /etc/locale.gen
+(Descomentar eleccion)
+locale-gen
+hwclock -w 
+date
+echo KEYMAP=es > /etc/vconsole.conf 
+echo LANG=en_US.UTF8 > /etc/locale.conf 
+
+Instalar GRUB BIOS 
+
+grub-install /dev/sda 
+
+Configurar GRUB EFI y BIOS
+
+grub-mkconfig -o /boot/grub/grub.cfg 
+
+Cear Usuario
+
+passwd (clave root)
+useradd -m user_name
+passwd user_name
+usermod -aG wheel user_name
+groups user_name 
+nano /etc/sudoers 
+uncoment wheel
+su user_name
+id 
+sudo su 
+
+exit
+umount -R /mnt 
+reboot
+
+RED ETH
+su
+systemctl start NetworkManager.service
+systemctl enable NetworkManager.service
+
+Drivers Graph
+
+lspci | grep VGA
+pacman -S xf86-video- vesa ati intel intel-ucode
+
+pacman -S xorg-server xorg-xinit mesa mesa-demos| gnome gnome-extra| gdm
+
+systemctl enable gdm.service
+
+
+AUR
+pacman -S base-devel
+pacman -S git 
+pacman -S wget
+como usuario en /home/user_name
+
+mkdir -p Desktop/user_name/repos
+cd Desktop/user_name/repos
+git clone https://aur.archlinux.org/paru-bin.git 
+cd paru-bin
+makepkg -si 
+
+BlackArch
+como user_name 
+en Desktop/user1/repos
+mkdir blackarch 
+curl -O https://blackarch.org/strap.sh 
+chmod +x strap.sh 
+sudo su 
+./strap.sh 
+
+para ver los paquetes pacman -Sgg | grep blackarch 
+
+como root
+pacman -S kitty
+pacman -S zsh
+
+usermod --shell /usr/bin/zsh user_name
+usermod --shell /usr/bin/zsh root 
+
+copiar kitty.conf y color.ini a ~/.config/kitty/
+copiar el .zshrc 
+paru -S zsh-syntax-highlighting zsh-autosuggestions 
+
+sudo plugin
+
+en /usr/share como root
+mkdir zsh-sudo
+chown user1:user1 zsh-sudo/
+exit
+pwd /usr/share/zsh-sudo 
+wget sudo plugin zsh raw 
+
+como user_name
+paru -S scrub
+
+
+
