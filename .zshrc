@@ -71,6 +71,7 @@ alias gstat='git status'
 alias gbr='git branch'
 alias gbra='git branch -a'
 alias gco='git checkout'
+alias analizedisk='ncdu -x -q'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
