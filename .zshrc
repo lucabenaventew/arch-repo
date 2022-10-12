@@ -1,4 +1,5 @@
 # Created by Luca Benavente for 5.8
+
 # Fix the Java Problem
 export _JAVA_AWT_WM_NONREPARENTING=1
 
