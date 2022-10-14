@@ -1,0 +1,113 @@
+UEFI
+loadkeys es
+ping 8.8.8.8
+
+wipefs --all /dev/sdX
+
+PARTICIONES
+
+ls /sys/firmware/efi/efivars
+debe desplegar una lista
+
+cfdisk
+
+elegimos gpt
+
+boot sda1 512M type=EFI System write
+root sda2 20G type=Linux Filesystem write
+home sda3 xG type=Linux Filesystem write
+swap sda4 xG type= Linux swap write
+
+quit
+
+FORMATEAR PARTICIONES
+mkfs.vfat -F32 /dev/sda1
+mkfs.ext4 /dev/sda2
+mkfs.ext4 /dev/sda3
+mkswap /dev/sda4
+swapon
+
+MONTAR PARTICIONES
+mount /dev/sda2 /mnt
+mkdir /mnt/boot
+mkdir /mnt/boot/efi
+mount /dev/sda1 /mnt/boot/efi
+mkdir /mnt/home
+mount /dev/sda3 /mnt/home
+
+PAQUETES BASE
+pacstrap /mnt linux linux-firmware base nano (os-prober si tienes windows) grub networkmanager dhcpcd efibootmgr netctl wpa_supplicant dialog
+
+GENERAR FSTAB
+genfstab /mnt >> /mnt/etc/fstab
+
+CONFIGURACIONES HORA KEYMAP
+
+
+INSTALAR GRUB UEFI
+grub-install --efi-directory=/boot/efi --bootloader -id='ArchLinux' --target=x86_64-efi
+
+CONFIGURAR GRUB UEFI
+grub-mkconfig -o /boot/grub/grub.cfg
+
+USUARIOS
+passwd (clave root)
+
+useradd -m user_name
+passwd user_name
+
+REBOOT
+exit
+umount -R /mnt
+reboot
+(quitar usb)
+systemctl start NetworkManager.service
+systemctl enable NetworkManager.service
+systemctl start wpa_supplicant.service
+systemctl enable wpa_supplicant.service
+
+USUARIOS
+usermod -aG wheel user_name
+groups user_name
+pacman -S sudo vim nano
+nano /etc/sudoers
+## Uncomment to allow members of group wheel to execute any command
+# %wheel ALL=(ALL:ALL) ALL
+su admin
+id
+sudo su
+
+LOCALHOSTS
+nano /etc/hosts
+127.0.0.1       localhost
+::1             localhost
+127.0.0.1       hostname.localhost hostname
+
+NEOFETCH
+pacman -S neofetch
+
+AUR
+mkdir -p desktop/user_name/repos
+cd !$
+pacman -S base-devel git wget
+git clone https://aur.archlinux.org/paru-bin.git
+cd paru-bin
+makepkg -si
+cd ..
+
+BLACK ARCH
+mkdir blackarch
+cd !$
+curl -O https://blackarch.org/strap.sh
+ls -l
+chmod +x strap.sh
+ls -l
+sudo su
+./strap.sh
+pacman -Sy
+pacman -Sgg | grep blackarch
+pacman -Sgg | grep blackarch | awk '{print $1}' | sort -u | less (lista categorias)
+pacman -S categoria (instala todos los paquetes de esa categoria)
+
+
+

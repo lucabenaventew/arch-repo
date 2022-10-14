@@ -1,3 +1,6 @@
+wipefs --all /dev/sdX
+sudo shred -v -n1 -z /dev/sdX borra la data y setea bits a 0
+
 loadkeys es
 ping 8.8.8.8 (Con cable)
 
@@ -7,6 +10,8 @@ Crear particiones BIOS
 
 fdisk -l
 cfdisk /dev/sda
+select dos
+
 
 sda1 512M primary Bootable* write
 sda2 /root 20G primary write
@@ -31,7 +36,7 @@ mount /dev/sda3/ /mnt/home
 
 Paquetes Base
 
-pacstrap /mnt linux linux-firmware base nano (os-prober si tienes windows) grub networkmanager dhcpcd (efibootmgr si es efi) netctl wpa_supplicant dialog
+pacstrap /mnt linux linux-firmware base base-devel nano (os-prober si tienes windows) grub networkmanager dhcpcd (efibootmgr si es efi) netctl wpa_supplicant dialog
 
 Generar fstab
 
