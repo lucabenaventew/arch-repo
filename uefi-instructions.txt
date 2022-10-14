@@ -118,8 +118,6 @@ Descomentar la linea de GRUB_THEME en
 FUENTES DE CONSOLA
 /usr/share/kbd/consolefonts
 
-SSH
-pacman -S openssh
 
 FUENTES
 git clone arch-repo y copiar fonts en /usr/share/
@@ -158,4 +156,19 @@ GRAPH ENV
 
 pacman -S gnome gdm xorg xorg-server alacritty
 systemctl start gdm.service
+
+GH AUTH
+git config --global user.name "user_name"
+git config --global user.email "user_email"
+git config --global --list
+
+SSH
+pacman -S openssh
+ls -al ~/.ssh
+# Lists the files in your .ssh directory, if they exist
+ssh-keygen -t rsa -C email
+eval "$ssh-agent -s"
+ssh-add ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub | less
+add content to github
 
