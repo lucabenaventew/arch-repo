@@ -109,5 +109,52 @@ pacman -Sgg | grep blackarch
 pacman -Sgg | grep blackarch | awk '{print $1}' | sort -u | less (lista categorias)
 pacman -S categoria (instala todos los paquetes de esa categoria)
 
+GRUB THEME
+Instalar theme en este directorio
+/boot/grub/themes
+Descomentar la linea de GRUB_THEME en
+/etc/default/grub
 
+FUENTES DE CONSOLA
+/usr/share/kbd/consolefonts
+
+SSH
+pacman -S openssh
+
+FUENTES
+sudo su
+cd /usr/share/fonts
+wget http://fontlot.com/downfile/5baeb08d06494fc84dbe36210f6f0ad5.105610
+file 5baeb08d06494fc84dbe36210f6f0ad5.105610 vemos que es un comprimido zip
+sudo pacman -S p7zip
+7z l 5baeb08d06494fc84dbe36210f6f0ad5.105610 vemos varias fuentes woff y ttf
+mv 5baeb08d06494fc84dbe36210f6f0ad5.105610 comprimido.zip
+unzip comprimido.zip
+rm comprimido.zip
+find . | grep "/.ttf$"
+
+
+ZSH
+pacman -S zsh
+echo $SHELL
+usermod --shell /usr/bin/zsh user_name
+paru -S zsh-syntax-highlighting zsh-autosuggestions
+pacman -S locate
+sudo updatedb (sync file sys)
+(fix .zshrc problems)
+(como root
+cd /usr/share
+mkdir zsh-sudo
+chown admin:admin zsh-sudo/
+)
+cd /usr/share/zsh-sudo
+wget https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/sudo/sudo.plugin.zsh
+
+KB CONFIG
+localectl set-x11-keymap es
+
+GRAPH ENV
+
+pacman -S gnome gdm xorg xorg-server alacritty
+systemctl start gdm.service
 
