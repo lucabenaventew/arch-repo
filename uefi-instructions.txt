@@ -122,6 +122,7 @@ SSH
 pacman -S openssh
 
 FUENTES
+git clone arch-repo y copiar fonts en /usr/share/
 sudo su
 cd /usr/share/fonts
 wget http://fontlot.com/downfile/5baeb08d06494fc84dbe36210f6f0ad5.105610
