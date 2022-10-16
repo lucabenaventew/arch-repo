@@ -120,9 +120,8 @@ FUENTES DE CONSOLA
 
 
 FUENTES
-git clone arch-repo y copiar fonts en /usr/share/
-sudo su
 cd /usr/share/fonts
+sudo su
 wget http://fontlot.com/downfile/5baeb08d06494fc84dbe36210f6f0ad5.105610
 file 5baeb08d06494fc84dbe36210f6f0ad5.105610 vemos que es un comprimido zip
 sudo pacman -S p7zip
@@ -130,7 +129,20 @@ sudo pacman -S p7zip
 mv 5baeb08d06494fc84dbe36210f6f0ad5.105610 comprimido.zip
 unzip comprimido.zip
 rm comprimido.zip
-find . | grep "/.ttf$"
+find . | grep "/.ttf$" | while read line; do cp $line .; done
+rm -r iosevka-2.2.1/
+rm -r iosevka-slab-2.2.1/
+ls
+https://dropbox.com/s/hrkub2yo9iapljz/icomoon.zip?dl=0
+mv /home/admin/Downloads/icomoon.zip .
+unzip icomoon.zip
+mv icomoon/*.ttf .
+rm -rf icomoon
+paru -s nerd-fonts-jetbrains-mono ttf-font-awesome ttf-font-awesome-4 ttf-material-design-icons
+www.nerdfonts.com download Hack Nerd Font
+mv /home/admin/Downloads/Hack.zip .
+unzip Hack.zip
+rm Hack.zip
 
 
 ZSH
